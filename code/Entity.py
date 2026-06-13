@@ -13,10 +13,11 @@ class Entity(ABC):
 
     def __init__(self, name: str, position: tuple):
 
-        self.health = None
         self.name = name
         self.dead = False
-
+        self.hit_registered = False
+        self.health = ENTITY_HEALTH[self.name]
+        self.max_health = self.health
         self.animations = {
             'idle': self.load_animation(f'./asset/{name}/idle'),
             'walk': self.load_animation(f'./asset/{name}/walk'),
@@ -37,9 +38,11 @@ class Entity(ABC):
         self.facing_right = True
         self.attacking = False
         self.health = ENTITY_HEALTH[self.name]
+        self.max_health = self.health
         self.damage = ENTITY_DAMAGE[self.name]
         self.score = ENTITY_SCORE[self.name]
         self.last_dmg = 'None'
+
 
     def load_animation(self, path):
 
@@ -53,12 +56,18 @@ class Entity(ABC):
                         os.path.join(path, file)
                     ).convert_alpha()
 
-                    frames.append(image)
+                    image = pygame.transform.scale(
+                        image,
+                        (
+                            int(image.get_width() * 0.2),
+                            int(image.get_height() * 0.2)
+                        )
+                    )
 
+                    frames.append(image)
         return frames
 
     def animate(self):
-
 
         frames = self.animations[self.state]
 
@@ -69,13 +78,27 @@ class Entity(ABC):
             if self.state == 'attack':
                 self.attacking = False
                 self.state = 'idle'
+                self.frame = 0
+
 
             elif self.state == 'death':
-                self.frame = len(frames) - 1
+
+                if self.frame >= len(frames):
+                    self.frame = len(frames) - 1
+
+                sprite = frames[int(self.frame)]
+
+                if not self.facing_right:
+                    sprite = pygame.transform.flip(sprite, True, False)
+
+                self.surf = sprite
+
                 return
 
             else:
                 self.frame = 0
+
+            frames = self.animations[self.state]
 
         sprite = frames[int(self.frame)]
 
@@ -90,9 +113,9 @@ class Entity(ABC):
 
     def take_damage(self, damage):
 
-            self.health -= damage
+        self.health -= damage
 
-            if self.health <= 0:
+        if self.health <= 0:
                 self.dead = True
                 self.state = 'death'
                 self.frame = 0

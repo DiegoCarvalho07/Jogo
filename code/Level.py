@@ -39,11 +39,16 @@ class Level:
             self.window.blit(self.background, (0, 0))
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
+                self.draw_health_bar(ent)
+                
+                if isinstance(ent, Player):
+                    pygame.draw.rect(
+                        self.window,
+                        (255, 0, 0),
+                        ent.get_attack_rect(),
+                        2
+                    )
                 ent.move()
-                if isinstance(ent, (Player, Enemy)):
-                    shoot = ent.shoot()
-                    if shoot is not None:
-                        self.entity_list.append(shoot)
                 if isinstance(ent, Player):
                     self.level_text(14, f'Player - Health: {ent.health} | Score: {ent.score}', C_GREEN, (10, 25))
             for event in pygame.event.get():
@@ -51,8 +56,19 @@ class Level:
                     pygame.quit()
                     sys.exit()
                 if event.type == EVENT_ENEMY:
-                    choice = random.choice(('Enemy1', 'Enemy2'))
-                    self.entity_list.append(EntityFactory.get_entity(choice))
+
+                    choice = random.choice(
+                        ('Enemy1', 'Enemy2')
+                    )
+
+                    enemy = EntityFactory.get_entity(choice)
+
+                    for ent in self.entity_list:
+                        if isinstance(ent, Player):
+                            enemy.target = ent
+                            break
+
+                    self.entity_list.append(enemy)
                 if event.type == EVENT_TIMEOUT:
                     self.timeout -= TIMEOUT_STEP
                     if self.timeout == 0:
@@ -76,3 +92,27 @@ class Level:
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
         text_rect: Rect = text_surf.get_rect(left=text_pos[0], top=text_pos[1])
         self.window.blit(source=text_surf, dest=text_rect)
+
+    def draw_health_bar(self, ent):
+
+        width = 50
+        height = 5
+
+        current_width = max(
+            0,
+            int((ent.health / ent.max_health) * width)
+        )
+
+        # fundo vermelho
+        pygame.draw.rect(
+            self.window,
+            (255, 0, 0),
+            (ent.rect.left, ent.rect.top - 10, width, height)
+        )
+
+        # vida verde
+        pygame.draw.rect(
+            self.window,
+            (0, 255, 0),
+            (ent.rect.left, ent.rect.top - 10, current_width, height)
+        )

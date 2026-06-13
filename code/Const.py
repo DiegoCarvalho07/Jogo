@@ -12,44 +12,26 @@ EVENT_ENEMY = pygame.USEREVENT + 1
 EVENT_TIMEOUT = pygame.USEREVENT + 2
 ENTITY_SPEED = {
     'Player': 3,
-    'PlayerShot': 1,
     'Enemy1': 1,
-    'Enemy1Shot': 5,
     'Enemy2': 1,
-    'Enemy2Shot': 2,
 }
 
 ENTITY_HEALTH = {
     'Player': 300,
-    'PlayerShot': 1,
-    'Enemy1': 50,
-    'Enemy1Shot': 1,
-    'Enemy2': 60,
-    'Enemy2Shot': 1,
+    'Enemy1': 15,
+    'Enemy2': 15,
 }
 
 ENTITY_DAMAGE = {
     'Player': 1,
-    'PlayerShot': 25,
     'Enemy1': 1,
-    'Enemy1Shot': 20,
     'Enemy2': 1,
-    'Enemy2Shot': 15,
 }
 
 ENTITY_SCORE = {
     'Player': 0,
-    'PlayerShot': 0,
     'Enemy1': 100,
-    'Enemy1Shot': 0,
     'Enemy2': 125,
-    'Enemy2Shot': 0,
-}
-
-ENTITY_SHOT_DELAY = {
-    'Player': 20,
-    'Enemy1': 100,
-    'Enemy2': 200,
 }
 
 # M
@@ -62,11 +44,11 @@ PLAYER_KEY_UP = pygame.K_w
 PLAYER_KEY_DOWN = pygame.K_s
 PLAYER_KEY_LEFT = pygame.K_a
 PLAYER_KEY_RIGHT = pygame.K_d
-PLAYER_KEY_SHOOT = pygame.K_RCTRL
+PLAYER_KEY_ATTACK = pygame.K_RCTRL
 
 
 # S
-SPAWN_TIME = 4000
+SPAWN_TIME = 6000
 
 # T
 TIMEOUT_STEP = 100  # 100ms
