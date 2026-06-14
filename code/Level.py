@@ -1,15 +1,12 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
+import pygame
 import random
 import sys
-
-import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
-
-from code.Const import C_WHITE, WIN_HEIGHT, EVENT_ENEMY, SPAWN_TIME, C_GREEN, C_CYAN, EVENT_TIMEOUT, \
+from code.Const import C_WHITE, EVENT_ENEMY, SPAWN_TIME, C_GREEN, EVENT_TIMEOUT, \
     TIMEOUT_STEP, TIMEOUT_LEVEL
-from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
 from code.EntityMediator import EntityMediator
@@ -38,19 +35,13 @@ class Level:
             clock.tick(60)
             self.window.blit(self.background, (0, 0))
             for ent in self.entity_list:
+                ent.move()
+
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 self.draw_health_bar(ent)
-                
+
                 if isinstance(ent, Player):
-                    pygame.draw.rect(
-                        self.window,
-                        (255, 0, 0),
-                        ent.get_attack_rect(),
-                        2
-                    )
-                ent.move()
-                if isinstance(ent, Player):
-                    self.level_text(14, f'Player - Health: {ent.health} | Score: {ent.score}', C_GREEN, (10, 25))
+                    self.level_text(14, f'Score: {ent.score}', C_GREEN, (10, 25))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -84,8 +75,15 @@ class Level:
             
             pygame.display.flip()
             # Collisions
-            EntityMediator.verify_collision(entity_list=self.entity_list)
-            EntityMediator.verify_health(entity_list=self.entity_list)
+            EntityMediator.verify_collision(
+                entity_list=self.entity_list
+            )
+
+            EntityMediator.verify_health(
+                entity_list=self.entity_list
+            )
+
+            pygame.display.flip()
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
@@ -95,7 +93,7 @@ class Level:
 
     def draw_health_bar(self, ent):
 
-        width = 50
+        width = ent.rect.width
         height = 5
 
         current_width = max(

@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from abc import ABC, abstractmethod
-from pydoc_data.topics import topics
 
 import pygame
 import os
 
-from code.Const import ENTITY_HEALTH, ENTITY_DAMAGE, ENTITY_SCORE
+from code.Const import ENTITY_HEALTH, ENTITY_DAMAGE, ENTITY_SCORE, ENTITY_SCALE
 
 
 class Entity(ABC):
@@ -16,8 +15,8 @@ class Entity(ABC):
         self.name = name
         self.dead = False
         self.hit_registered = False
-        self.health = ENTITY_HEALTH[self.name]
-        self.max_health = self.health
+        self.max_health = ENTITY_HEALTH[self.name]
+        self.health = self.max_health
         self.animations = {
             'idle': self.load_animation(f'./asset/{name}/idle'),
             'walk': self.load_animation(f'./asset/{name}/walk'),
@@ -27,7 +26,7 @@ class Entity(ABC):
 
         self.state = 'idle'
         self.frame = 0
-        self.animation_speed = 0.20
+        self.animation_speed = 0.40
 
         self.surf = self.animations['idle'][0]
 
@@ -37,8 +36,6 @@ class Entity(ABC):
 
         self.facing_right = True
         self.attacking = False
-        self.health = ENTITY_HEALTH[self.name]
-        self.max_health = self.health
         self.damage = ENTITY_DAMAGE[self.name]
         self.score = ENTITY_SCORE[self.name]
         self.last_dmg = 'None'
@@ -59,8 +56,8 @@ class Entity(ABC):
                     image = pygame.transform.scale(
                         image,
                         (
-                            int(image.get_width() * 0.2),
-                            int(image.get_height() * 0.2)
+                            int(image.get_width() * ENTITY_SCALE),
+                            int(image.get_height() * ENTITY_SCALE)
                         )
                     )
 
@@ -113,7 +110,7 @@ class Entity(ABC):
 
     def take_damage(self, damage):
 
-        self.health -= damage
+        ent2.take_damage(5)
 
         if self.health <= 0:
                 self.dead = True

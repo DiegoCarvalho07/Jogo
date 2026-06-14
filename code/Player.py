@@ -82,9 +82,9 @@ class Player(Entity):
         if self.facing_right:
             return pygame.Rect(
                 self.rect.right,
-                self.rect.top,
-                5,
-                self.rect.height
+                self.rect.top + 15,
+                35,
+                self.rect.height - 30
             )
 
         return pygame.Rect(
