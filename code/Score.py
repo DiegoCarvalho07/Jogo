@@ -1,6 +1,6 @@
 
 from datetime import datetime
-
+import sys
 import pygame
 from pygame import Surface, Rect, KEYDOWN, K_RETURN, K_BACKSPACE, K_ESCAPE
 from pygame.font import Font

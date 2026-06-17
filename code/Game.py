@@ -27,15 +27,19 @@ class Game:
                 level = Level(self.window, 'Level1', player_score)
                 result = level.run(player_score)
 
-                if result is not None:
-                    player_score = result
+                if result is False:
+                    continue
 
-                    level = Level(self.window, 'Level2', player_score)
-                    result = level.run(player_score)
+                player_score = result
 
-                    if result is not None:
-                        player_score = result
-                        score.save(player_score)
+                level = Level(self.window, 'Level2', player_score)
+                result = level.run(player_score)
+
+                if result is False:
+                    continue
+
+                player_score = result
+                score.save(player_score)
 
             elif menu_return == MENU_OPTION[1]:
                 score.show()

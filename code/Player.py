@@ -10,14 +10,36 @@ from code.Entity import Entity
 class Player(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
-        self.health = 300
-
+        self.invincible_timer = 45
+        self.attack_cooldown = 10
+        self.stun_timer = 10
+        self.attack_lock_timer = 0
+        print(
+            "HP:", self.health,
+            "MAX:", self.max_health
+        )
 
     def move(self):
+
+        if self.attack_lock_timer > 0:
+            self.attack_lock_timer -= 1
+
+        if self.state != 'attack' and self.attacking:
+            self.attacking = False
+
+        if self.invincible_timer > 0:
+            self.invincible_timer -= 1
 
         if self.dead:
             self.animate()
             return
+
+        if self.hurt:
+            self.animate()
+            return
+
+        if self.state == 'idle' and self.attacking:
+            self.attacking = False
 
         pressed_key = pygame.key.get_pressed()
 
@@ -66,9 +88,17 @@ class Player(Entity):
         self.animate()
 
     def attack(self):
+
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+
         keys = pygame.key.get_pressed()
 
-        if keys[PLAYER_KEY_ATTACK] and not self.attacking:
+        if (
+                keys[PLAYER_KEY_ATTACK]
+                and not self.attacking
+                and self.attack_cooldown == 0
+        ):
             self.attacking = True
             self.hit_registered = False
             self.state = 'attack'

@@ -17,15 +17,15 @@ ENTITY_SPEED = {
 }
 
 ENTITY_HEALTH = {
-    'Player': 300,
+    'Player': 100,
     'Enemy1': 15,
     'Enemy2': 25,
 }
 
 ENTITY_DAMAGE = {
     'Player': 5,
-    'Enemy1': 1,
-    'Enemy2': 2,
+    'Enemy1': 3,
+    'Enemy2': 5,
 }
 
 ENTITY_SCORE = {
@@ -36,8 +36,8 @@ ENTITY_SCORE = {
 
 ENTITY_SCALE = 0.2
 
-ENEMY_ATTACK_RANGE_X = 50
-ENEMY_ATTACK_RANGE_Y = 20
+ENEMY_ATTACK_RANGE_X = 20
+ENEMY_ATTACK_RANGE_Y = 15
 
 # M
 MENU_OPTION = ('NEW GAME',
@@ -55,7 +55,7 @@ PLAYER_ATTACK_RANGE_X = 50
 PLAYER_ATTACK_RANGE_Y = 20
 
 # S
-SPAWN_TIME = 6000
+SPAWN_TIME = 5000
 
 # T
 TIMEOUT_STEP = 100  # 100ms

@@ -1,4 +1,4 @@
-from code.Const import PLAYER_ATTACK_RANGE_X, PLAYER_ATTACK_RANGE_Y
+from code.Const import PLAYER_ATTACK_RANGE_X, PLAYER_ATTACK_RANGE_Y, WIN_WIDTH
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.Player import Player
@@ -45,22 +45,30 @@ class EntityMediator:
                         )
 
                         if distance_y < 5:
+                            ent2.take_damage(ent1.damage)
 
-                            print("Vida antes:", ent2.health)
+                            knockback_enemy = 15
 
-                            ent2.health -= ent1.damage
+                            if ent2.rect.centerx > ent1.rect.centerx:
+                                ent2.rect.x += knockback_enemy
+                            else:
+                                ent2.rect.x -= knockback_enemy
+
+                            ent2.attacking = False
+                            ent2.hit_registered = True
+                            ent2.frame = 0
                             ent2.last_dmg = ent1.name
 
-                            print("Vida depois:", ent2.health)
-
                             ent1.hit_registered = True
-                            ent1.attack_cooldown = 60
+                            ent1.attack_cooldown = 10
                 # ATAQUE DO INIMIGO
                 if (
                     ent2.attacking
                     and not ent2.hit_registered
                     and ent2.frame >= 1
                 ):
+                    if ent1.hurt:
+                        return
 
                     distance_x = abs(
                         ent1.rect.centerx -
@@ -74,26 +82,54 @@ class EntityMediator:
 
                     if distance_x < PLAYER_ATTACK_RANGE_X and distance_y < PLAYER_ATTACK_RANGE_Y:
 
-                        ent1.health -= 10
+                        if ent1.hurt:
+                            return
+
+                        if ent1.invincible_timer > 0:
+                            return
+
+                        ent1.take_damage(ent2.damage)
+                        ent1.attack_lock_timer = 30
+                        ent1.attacking = False
+
+                        if ent1.rect.centerx < ent2.rect.centerx:
+                            ent1.rect.x -= 10
+                        else:
+                            ent1.rect.x += 10
+
+                        if ent1.rect.left < 50:
+                            ent1.rect.left = 50
+
+                        if ent1.rect.right > WIN_WIDTH - 40:
+                            ent1.rect.right = WIN_WIDTH - 40
+
+                        knockback_enemy = 15
+
+                        if ent2.rect.centerx > ent1.rect.centerx:
+                            ent2.rect.x += knockback_enemy
+                        else:
+                            ent2.rect.x -= knockback_enemy
+
+                        if ent2.rect.left < 50:
+                            ent2.rect.left = 50
+
+                        if ent2.rect.right > WIN_WIDTH - 40:
+                            ent2.rect.right = WIN_WIDTH - 40
+
                         ent1.last_dmg = ent2.name
-
                         ent2.hit_registered = True
-
-                        print(
-                            f"{ent2.name} acertou!"
-                        )
-
-                        print(
-                            f"Vida jogador: {ent1.health}"
-                        )
+                        ent2.attack_cooldown = 120
 
     @staticmethod
     def __give_score(enemy: Enemy, entity_list: list[Entity]):
-
+        print('Entrou no give score')
         for ent in entity_list:
 
             if isinstance(ent, Player):
+                print('Player encontrado')
+                print('SCORE ANTES', ent.score)
                 ent.score += enemy.score
+                print('SCORE DEPOIS', ent.score)
                 break
 
     @staticmethod
@@ -121,24 +157,17 @@ class EntityMediator:
 
         for ent in entity_list[:]:
 
-            if ent.health <= 0 and not ent.dead:
+            if ent.dead:
 
-                print(f"{ent.name} MORREU")
+                if ent.death_timer > 0:
+                    ent.death_timer -= 1
 
-                ent.dead = True
-                ent.state = 'death'
-                ent.frame = 0
+                else:
 
-                if isinstance(ent, Enemy):
-                    EntityMediator.__give_score(
-                        ent,
-                        entity_list
-                    )
+                    if isinstance(ent, Enemy):
+                        EntityMediator.__give_score(
+                            ent,
+                            entity_list
+                        )
 
-            elif ent.dead:
-
-                death_frames = ent.animations['death']
-
-                if int(ent.frame) >= len(death_frames) - 1:
-
-                    entity_list.remove(ent)
+                        entity_list.remove(ent)
