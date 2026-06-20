@@ -22,7 +22,25 @@ class Menu:
             # DRAW IMAGES
             self.window.blit(source=self.surf, dest=self.rect)
             self.menu_text(65, "Fight  Arena", C_ORANGE, ((WIN_WIDTH / 2), 135))
-            self.menu_text(17, "Game Commands - Space bar = Enter A=left D=Right W=Up S=Down", C_WHITE, ((WIN_WIDTH / 2), 300))
+
+            self.menu_text(17, "A", C_ORANGE, (30, 320))
+            self.menu_text(17, "=LEFT", C_WHITE, (65, 320))
+
+            self.menu_text(17, "D", C_ORANGE, (110, 320))
+            self.menu_text(17, "=RIGHT", C_WHITE, (150, 320))
+
+            self.menu_text(17, "W", C_ORANGE, (200, 320))
+            self.menu_text(17, "=UP", C_WHITE, (230, 320))
+
+            self.menu_text(17, "S", C_ORANGE, (260, 320))
+            self.menu_text(17, "=DOWN", C_WHITE, (300, 320))
+
+            self.menu_text(17, "L", C_ORANGE, (345, 320))
+            self.menu_text(17, "=ATTACK", C_WHITE, (390, 320))
+
+            self.menu_text(17, "RETURN", C_ORANGE, (470, 320))
+            self.menu_text(17, "=ENTER", C_WHITE, (540, 320))
+
 
             for i in range(len(MENU_OPTION)):
                 if i == menu_option:
@@ -47,7 +65,7 @@ class Menu:
                             menu_option -= 1
                         else:
                             menu_option = len(MENU_OPTION) - 1
-                    if event.key == pygame.K_SPACE:  # ENTER
+                    if event.key == pygame.K_RETURN:  # ENTER
                         return MENU_OPTION[menu_option]
 
     def menu_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):

@@ -15,7 +15,7 @@ from code.Const import (
     EVENT_TIMEOUT,
     SPAWN_TIME,
     TIMEOUT_STEP,
-    TIMEOUT_LEVEL
+    TIMEOUT_LEVEL, WIN_WIDTH
 )
 
 from code.Entity import Entity
@@ -31,6 +31,9 @@ class Level:
         self.timeout = TIMEOUT_LEVEL
         self.window = window
         self.name = name
+        self.enemies_spawned = 0
+        self.enemies_killed = 0
+        self.max_enemies = 8
 
         self.entity_list: list[Entity] = []
 
@@ -98,8 +101,14 @@ class Level:
                         14,
                         f'Score: {ent.score}',
                         C_GREEN,
-                        (10, 25)
+                        (10, 25))
+                    self.level_text(
+                        14,
+                        f'Kills: {self.enemies_killed}/{self.max_enemies}',
+                        C_GREEN,
+                        (10, 45)
                     )
+
 
             # eventos
             for event in pygame.event.get():
@@ -115,7 +124,10 @@ class Level:
                         if ent.name.startswith('Enemy')
                     )
 
-                    if enemy_count >= 3:
+                    if enemy_count >= 2:
+                        continue
+
+                    if self.enemies_spawned >= self.max_enemies:
                         continue
 
                     choice = random.choice(
@@ -125,6 +137,8 @@ class Level:
                     enemy = EntityFactory.get_entity(
                         choice
                     )
+
+                    self.enemies_spawned += 1
 
                     for ent in self.entity_list:
                         if isinstance(ent, Player):
@@ -139,9 +153,32 @@ class Level:
 
                     if self.timeout <= 0:
 
-                        for ent in self.entity_list:
-                            if isinstance(ent, Player):
-                                return ent.score
+                        if self.enemies_killed < self.max_enemies:
+
+                            self.level_text(
+                                40,
+                                'YOU LOST,TIME OUT',
+                                (255, 0, 0),
+                                (100, 130)
+                            )
+
+                            self.level_text(
+                                18,
+                                f'Enemies defeated: {self.enemies_killed}/{self.max_enemies}',
+                                C_WHITE,
+                                (180, 190)
+                            )
+
+                            pygame.display.flip()
+                            pygame.time.delay(5000)
+
+                            return False
+
+                        else:
+
+                            for ent in self.entity_list:
+                                if isinstance(ent, Player):
+                                    return ent.score
 
             # GAME OVER
             if player_dead:
@@ -150,14 +187,30 @@ class Level:
                     40,
                     'GAME OVER',
                     (255, 0, 0),
-                    (180, 140)
+                    (190, 110)
+                )
+
+                self.level_text(
+                    20,
+                    'Your warrior has fallen',
+                    C_WHITE,
+                    (160, 200)
                 )
 
                 pygame.display.flip()
 
-                pygame.time.delay(3000)
+                pygame.time.delay(5000)
 
                 return False
+
+            if (self.enemies_killed >= self.max_enemies):
+                self.level_text(40,'LEVEL COMPLETED',(0,255,0),(120,140))
+                pygame.display.flip()
+                pygame.time.delay(3000)
+
+                for ent in self.entity_list:
+                    if isinstance(ent, Player):
+                        return ent.score
 
             # se não houver player
             if not any(
@@ -180,7 +233,7 @@ class Level:
             )
 
             # mortes
-            EntityMediator.verify_health(
+            self.enemies_killed += EntityMediator.verify_health(
                 entity_list=self.entity_list
             )
 

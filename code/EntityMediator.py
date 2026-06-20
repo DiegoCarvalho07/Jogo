@@ -44,7 +44,8 @@ class EntityMediator:
                             ent2.rect.centery
                         )
 
-                        if distance_y < 5:
+                        if distance_y < 25:
+
                             ent2.take_damage(ent1.damage)
 
                             knockback_enemy = 15
@@ -122,14 +123,13 @@ class EntityMediator:
 
     @staticmethod
     def __give_score(enemy: Enemy, entity_list: list[Entity]):
-        print('Entrou no give score')
+        
         for ent in entity_list:
 
             if isinstance(ent, Player):
-                print('Player encontrado')
-                print('SCORE ANTES', ent.score)
+
                 ent.score += enemy.score
-                print('SCORE DEPOIS', ent.score)
+
                 break
 
     @staticmethod
@@ -155,6 +155,8 @@ class EntityMediator:
     @staticmethod
     def verify_health(entity_list: list[Entity]):
 
+        enemies_removed = 0
+
         for ent in entity_list[:]:
 
             if ent.dead:
@@ -171,3 +173,7 @@ class EntityMediator:
                         )
 
                         entity_list.remove(ent)
+
+                        enemies_removed += 1
+
+        return enemies_removed

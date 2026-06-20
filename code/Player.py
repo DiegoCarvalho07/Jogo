@@ -14,10 +14,6 @@ class Player(Entity):
         self.attack_cooldown = 10
         self.stun_timer = 10
         self.attack_lock_timer = 0
-        print(
-            "HP:", self.health,
-            "MAX:", self.max_health
-        )
 
     def move(self):
 
@@ -72,14 +68,14 @@ class Player(Entity):
         else:
             self.state = 'idle'
 
-        if self.rect.left < 50:
-           self.rect.left = 50
+        if self.rect.left < 20:
+           self.rect.left = 20
 
-        if self.rect.right > 560:
-           self.rect.right = 560
+        if self.rect.right > 585:
+           self.rect.right = 585
 
-        if self.rect.top < 70:
-           self.rect.top = 70
+        if self.rect.top < 85:
+           self.rect.top = 85
 
         if self.rect.bottom > WIN_HEIGHT:
            self.rect.bottom = WIN_HEIGHT
@@ -113,13 +109,13 @@ class Player(Entity):
             return pygame.Rect(
                 self.rect.right,
                 self.rect.top + 15,
-                35,
+                5,
                 self.rect.height - 30
             )
 
         return pygame.Rect(
-            self.rect.left - 20,
-            self.rect.top,
-            20,
-            self.rect.height
+            self.rect.left - 5,
+            self.rect.top + 15,
+            5,
+            self.rect.height - 30
         )

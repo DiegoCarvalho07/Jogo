@@ -12,7 +12,7 @@ EVENT_ENEMY = pygame.USEREVENT + 1
 EVENT_TIMEOUT = pygame.USEREVENT + 2
 ENTITY_SPEED = {
     'Player': 3,
-    'Enemy1': 1,
+    'Enemy1': 1.3,
     'Enemy2': 2,
 }
 
@@ -24,7 +24,7 @@ ENTITY_HEALTH = {
 
 ENTITY_DAMAGE = {
     'Player': 5,
-    'Enemy1': 3,
+    'Enemy1': 4,
     'Enemy2': 5,
 }
 
@@ -36,8 +36,8 @@ ENTITY_SCORE = {
 
 ENTITY_SCALE = 0.2
 
-ENEMY_ATTACK_RANGE_X = 20
-ENEMY_ATTACK_RANGE_Y = 15
+ENEMY_ATTACK_RANGE_X = 45
+ENEMY_ATTACK_RANGE_Y = 25
 
 # M
 MENU_OPTION = ('NEW GAME',
@@ -52,10 +52,10 @@ PLAYER_KEY_RIGHT = pygame.K_d
 PLAYER_KEY_ATTACK = pygame.K_l
 
 PLAYER_ATTACK_RANGE_X = 50
-PLAYER_ATTACK_RANGE_Y = 20
+PLAYER_ATTACK_RANGE_Y = 50
 
 # S
-SPAWN_TIME = 5000
+SPAWN_TIME = 3000
 
 # T
 TIMEOUT_STEP = 100  # 100ms
