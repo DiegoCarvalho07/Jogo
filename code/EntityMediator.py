@@ -1,4 +1,4 @@
-from code.Const import PLAYER_ATTACK_RANGE_X, PLAYER_ATTACK_RANGE_Y, WIN_WIDTH
+from code.Const import ENEMY_ATTACK_RANGE_X, ENEMY_ATTACK_RANGE_Y, WIN_WIDTH
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.Player import Player
@@ -81,7 +81,7 @@ class EntityMediator:
                         ent2.rect.centery
                     )
 
-                    if distance_x < PLAYER_ATTACK_RANGE_X and distance_y < PLAYER_ATTACK_RANGE_Y:
+                    if distance_x < ENEMY_ATTACK_RANGE_X and distance_y < ENEMY_ATTACK_RANGE_Y:
 
                         if ent1.hurt:
                             return

@@ -68,11 +68,11 @@ class Player(Entity):
         else:
             self.state = 'idle'
 
-        if self.rect.left < 20:
-           self.rect.left = 20
+        if self.rect.left < 15:
+           self.rect.left = 15
 
-        if self.rect.right > 585:
-           self.rect.right = 585
+        if self.rect.right > 590:
+           self.rect.right = 590
 
         if self.rect.top < 85:
            self.rect.top = 85

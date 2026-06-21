@@ -1,6 +1,6 @@
-# C
-import pygame
 
+import pygame
+# C
 C_ORANGE = (217, 145, 133)
 C_YELLOW = (255, 255, 128)
 C_WHITE = (255, 255, 255)
@@ -12,7 +12,7 @@ EVENT_ENEMY = pygame.USEREVENT + 1
 EVENT_TIMEOUT = pygame.USEREVENT + 2
 ENTITY_SPEED = {
     'Player': 3,
-    'Enemy1': 1.3,
+    'Enemy1': 2,
     'Enemy2': 2,
 }
 
@@ -51,20 +51,12 @@ PLAYER_KEY_LEFT = pygame.K_a
 PLAYER_KEY_RIGHT = pygame.K_d
 PLAYER_KEY_ATTACK = pygame.K_l
 
-PLAYER_ATTACK_RANGE_X = 50
-PLAYER_ATTACK_RANGE_Y = 50
-
-# S
-SPAWN_TIME = 3000
-
-# T
-TIMEOUT_STEP = 100  # 100ms
-TIMEOUT_LEVEL = 60000  # 60s
 # W
 WIN_WIDTH = 600
 WIN_HEIGHT = 337
 
 # S
+SPAWN_TIME = 3000
 SCORE_POS = {'Title': (WIN_WIDTH / 2, 50),
              'EnterName': (WIN_WIDTH / 2, 80),
              'Label': (WIN_WIDTH / 2, 90),
@@ -80,3 +72,7 @@ SCORE_POS = {'Title': (WIN_WIDTH / 2, 50),
              8: (WIN_WIDTH / 2, 270),
              9: (WIN_WIDTH / 2, 290),
              }
+
+# T
+TIMEOUT_STEP = 100  # 100ms
+TIMEOUT_LEVEL = 60000  # 60s

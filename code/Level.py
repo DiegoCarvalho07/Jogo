@@ -194,7 +194,7 @@ class Level:
                     20,
                     'Your warrior has fallen',
                     C_WHITE,
-                    (160, 200)
+                    (160, 170)
                 )
 
                 pygame.display.flip()

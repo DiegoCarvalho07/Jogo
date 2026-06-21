@@ -57,12 +57,6 @@ class Enemy(Entity):
                 self.target.rect.centery
             )
 
-            if self.target.rect.left <= 55:
-                return
-
-            if self.target.rect.right >= 555:
-                return
-
             # perto o suficiente para atacar
             if distance_x < ENEMY_ATTACK_RANGE_X and distance_y < ENEMY_ATTACK_RANGE_Y:
 
