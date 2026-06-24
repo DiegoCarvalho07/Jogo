@@ -3,6 +3,7 @@
 
 
 import pygame
+import sys
 
 from code.Const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
 from code.Level import Level
@@ -13,6 +14,9 @@ from code.Score import Score
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.display.set_caption('FIGHT ARENA DEMO')
+        icon = pygame.image.load('./asset/Player.png')
+        pygame.display.set_icon(icon)
         self.window = pygame.display.set_mode(size=(WIN_WIDTH, WIN_HEIGHT))
 
     def run(self):

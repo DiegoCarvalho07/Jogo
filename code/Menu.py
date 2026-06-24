@@ -4,6 +4,7 @@
 import pygame.image
 from pygame import Surface, Rect
 from pygame.font import Font
+import sys
 
 from code.Const import WIN_WIDTH, C_ORANGE, MENU_OPTION, C_WHITE, C_YELLOW
 
@@ -53,7 +54,7 @@ class Menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()  # Close Window
-                    quit()  # end pygame
+                    sys.exit()  # end pygame
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:  # DOWN KEY
                         if menu_option < len(MENU_OPTION) - 1:
